@@ -28,6 +28,11 @@ class VideoGameReviews
     #[ORM\JoinColumn(nullable: false)]
     private ?VideoGameArticles $videoGameArticles = null;
 
+    public function __toString(): string
+    {
+        return (string) $this->users;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

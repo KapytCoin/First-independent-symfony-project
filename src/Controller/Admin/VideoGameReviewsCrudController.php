@@ -5,10 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\VideoGameReviews;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -26,7 +26,7 @@ class VideoGameReviewsCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('отзыв')
             ->setEntityLabelInPlural('отзыв')
-            ->setSearchFields(['users_id', 'text', 'grade'])
+            ->setSearchFields(['users', 'text', 'grade'])
         ;
     }
 
@@ -38,9 +38,9 @@ class VideoGameReviewsCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
-    yield AssociationField::new('videoGameArticles');
-        yield TextField::new('users_id');
-        yield TextField::new('grade');
+        yield AssociationField::new('videoGameArticles');
+        yield AssociationField::new('users');
+        yield IntegerField::new('grade');
         yield TextareaField::new('text')
             ->hideOnIndex()
         ;

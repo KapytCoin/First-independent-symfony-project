@@ -25,7 +25,7 @@ class VideoGameArticlesCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('статью')
             ->setEntityLabelInPlural('статью')
-            ->setSearchFields(['name', 'text', 'average_rating'])
+            ->setSearchFields(['name', 'text'])
         ;
     }
 
@@ -35,15 +35,11 @@ class VideoGameArticlesCrudController extends AbstractCrudController
             ->add(EntityFilter::new('videoGameArticles'))
         ;
     }
+
     public function configureFields(string $pageName): iterable
     {
         yield TextField::new('name');
-        yield TextField::new('average_rating');
-        yield TextareaField::new('text')
-            ->hideOnIndex()
-        ;
-        yield TextField::new('photoFilename')
-            ->onlyOnIndex()
-        ;
+        yield TextareaField::new('text')->hideOnIndex();
+        yield TextField::new('photoFilename')->onlyOnIndex();
     }
 }

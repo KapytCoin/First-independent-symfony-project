@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
@@ -15,9 +14,6 @@ class Users
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(type: Types::GUID)]
-    private ?string $uuid = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nickname = null;
@@ -39,28 +35,21 @@ class Users
      * @var Collection<int, VideoGameReviews>
      */
     #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'users')]
-    private Collection $video_game_reviews;
+    private Collection $videoGameReviews;
 
     public function __construct()
     {
-        $this->video_game_reviews = new ArrayCollection();
+        $this->videoGameReviews = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->nickname;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getNickname(): ?string
@@ -128,25 +117,25 @@ class Users
      */
     public function getVideoGameReviews(): Collection
     {
-        return $this->video_game_reviews;
+        return $this->videoGameReviews;
     }
 
-    public function addVideoGameReviews(VideoGameReviews $video_game_reviews): static
+    public function addVideoGameReviews(VideoGameReviews $videoGameReviews): static
     {
-        if (!$this->video_game_reviews->contains($video_game_reviews)) {
-            $this->video_game_reviews->add($video_game_reviews);
-            $video_game_reviews->setUsers($this);
+        if (!$this->videoGameReviews->contains($videoGameReviews)) {
+            $this->videoGameReviews->add($videoGameReviews);
+            $videoGameReviews->setUsers($this);
         }
 
         return $this;
     }
 
-    public function removeVideoGameReviews(VideoGameReviews $video_game_reviews): static
+    public function removeVideoGameReviews(VideoGameReviews $videoGameReviews): static
     {
-        if ($this->video_game_reviews->removeElement($video_game_reviews)) {
+        if ($this->videoGameReviews->removeElement($videoGameReviews)) {
             // set the owning side to null (unless already changed)
-            if ($video_game_reviews->getUsers() === $this) {
-                $video_game_reviews->setUsers(null);
+            if ($videoGameReviews->getUsers() === $this) {
+                $videoGameReviews->setUsers(null);
             }
         }
 
