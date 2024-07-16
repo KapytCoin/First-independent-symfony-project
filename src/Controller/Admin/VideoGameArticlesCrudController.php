@@ -7,6 +7,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 
 class VideoGameArticlesCrudController extends AbstractCrudController
 {
@@ -15,14 +20,30 @@ class VideoGameArticlesCrudController extends AbstractCrudController
         return VideoGameArticles::class;
     }
 
-    /*
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('статью')
+            ->setEntityLabelInPlural('статью')
+            ->setSearchFields(['name', 'text', 'average_rating'])
+        ;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(EntityFilter::new('videoGameArticles'))
+        ;
+    }
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        yield TextField::new('name');
+        yield TextField::new('average_rating');
+        yield TextareaField::new('text')
+            ->hideOnIndex()
+        ;
+        yield TextField::new('photoFilename')
+            ->onlyOnIndex()
+        ;
     }
-    */
 }

@@ -14,14 +14,11 @@ class VideoGameReviews
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::GUID)]
-    private ?string $uuid = null;
-
     #[ORM\Column(length: 1000)]
     private ?string $text = null;
 
     #[ORM\Column]
-    private ?int $reviews = null;
+    private ?int $grade = null;
 
     #[ORM\ManyToOne(inversedBy: 'VideoGameReviews')]
     #[ORM\JoinColumn(nullable: false)]
@@ -36,18 +33,6 @@ class VideoGameReviews
         return $this->id;
     }
 
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-
     public function getText(): ?string
     {
         return $this->text;
@@ -60,14 +45,14 @@ class VideoGameReviews
         return $this;
     }
 
-    public function getReviews(): ?int
+    public function getGrade(): ?int
     {
-        return $this->reviews;
+        return $this->grade;
     }
 
-    public function setReviews(int $reviews): static
+    public function setGrade(int $grade): static
     {
-        $this->reviews = $reviews;
+        $this->grade = $grade;
 
         return $this;
     }

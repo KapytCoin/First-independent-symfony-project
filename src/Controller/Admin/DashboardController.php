@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\VideoGameArticles;
 use App\Entity\VideoGameReviews;
+use App\Entity\Users;
+use App\Entity\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -41,13 +43,18 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Bombaster Dev');
+            ->setTitle('Bombaster');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToRoute('Back to the website','fas fa-home','homepage');
-        yield MenuItem::linkToCrud('VideoGameArticles','fas fa-map-marker-alt','VideoGameArticles::class');
-        yield MenuItem::linkToCrud('VideoGameReviews','fas fa-comments','VideoGameReviews::class');
+        yield MenuItem::linkToRoute('Вернуться на сайт','fas fa-home','homepage');
+
+        yield MenuItem::linkToCrud('Статьи','fa-solid fa-gamepad',VideoGameArticles::class);
+        yield MenuItem::linkToCrud('Отзывы','fas fa-comments',VideoGameReviews::class);
+
+        yield MenuItem::section('Пользователи');
+        yield MenuItem::linkToCrud('Пользователи','fa-solid fa-user',Users::class);
+        yield MenuItem::linkToCrud('Роли пользователей','fa-regular fa-user',Roles::class);
     }
 }

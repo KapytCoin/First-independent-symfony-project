@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\VideoGameArticlesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VideoGameArticlesRepository::class)]
@@ -16,23 +15,11 @@ class VideoGameArticles
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::GUID)]
-    private ?string $uuid = null;
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 1000)]
     private ?string $text = null;
-
-    #[ORM\Column]
-    private ?int $averageRating = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $numberOfReviews = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $imgPath = null;
 
     /**
      * @var Collection<int, VideoGameReviews>
@@ -47,24 +34,12 @@ class VideoGameArticles
 
     public function __toString(): string
     {
-        return $this->name.' '.$this->text;
+        return $this->name;
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUuid(): ?string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(string $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -87,42 +62,6 @@ class VideoGameArticles
     public function setText(string $text): static
     {
         $this->text = $text;
-
-        return $this;
-    }
-
-    public function getAverageRating(): ?int
-    {
-        return $this->averageRating;
-    }
-
-    public function setAverageRating(int $averageRating): static
-    {
-        $this->averageRating = $averageRating;
-
-        return $this;
-    }
-
-    public function getNumberOfReviews(): ?int
-    {
-        return $this->numberOfReviews;
-    }
-
-    public function setNumberOfReviews(?int $numberOfReviews): static
-    {
-        $this->numberOfReviews = $numberOfReviews;
-
-        return $this;
-    }
-
-    public function getImgPath(): ?string
-    {
-        return $this->imgPath;
-    }
-
-    public function setImgPath(string $imgPath): static
-    {
-        $this->imgPath = $imgPath;
 
         return $this;
     }
