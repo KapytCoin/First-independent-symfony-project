@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Статья - {{ videoGameArticles }}{% endblock %}
+
+{% block body %}
+    <h2>{{ videoGameArticles }} Статья</h2>
+
+    {% if videoGameReviews|length > 0 %}
+        {% for videoGameReviews in videoGameReviews %}
+
+            <h4>{{ videoGameReviews.users }}</h4>
+
+            <p>{{ videoGameReviews.text }}</p>
+
+            <p>{{ videoGameReviews.grade }}</p>
+
+        {% endfor %}
+    {% else %}
+        <div>Нет комментариев</div>
+    {% endif %}
+{% endblock %}
