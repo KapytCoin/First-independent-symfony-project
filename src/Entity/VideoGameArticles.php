@@ -26,23 +26,28 @@ class VideoGameArticles
     private ?string $text = null;
 
     #[ORM\Column]
-    private ?int $average_rating = null;
+    private ?int $averageRating = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $number_of_reviews = null;
+    private ?int $numberOfReviews = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $img_path = null;
+    private ?string $imgPath = null;
 
     /**
      * @var Collection<int, VideoGameReviews>
      */
-    #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'video_game_articles')]
-    private Collection $video_game_reviews;
+    #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'VideoGameArticles')]
+    private Collection $videoGameReviews;
 
     public function __construct()
     {
-        $this->video_game_reviews = new ArrayCollection();
+        $this->videoGameReviews = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name.' '.$this->text;
     }
 
     public function getId(): ?int
@@ -88,36 +93,36 @@ class VideoGameArticles
 
     public function getAverageRating(): ?int
     {
-        return $this->average_rating;
+        return $this->averageRating;
     }
 
-    public function setAverageRating(int $average_rating): static
+    public function setAverageRating(int $averageRating): static
     {
-        $this->average_rating = $average_rating;
+        $this->averageRating = $averageRating;
 
         return $this;
     }
 
     public function getNumberOfReviews(): ?int
     {
-        return $this->number_of_reviews;
+        return $this->numberOfReviews;
     }
 
-    public function setNumberOfReviews(?int $number_of_reviews): static
+    public function setNumberOfReviews(?int $numberOfReviews): static
     {
-        $this->number_of_reviews = $number_of_reviews;
+        $this->numberOfReviews = $numberOfReviews;
 
         return $this;
     }
 
     public function getImgPath(): ?string
     {
-        return $this->img_path;
+        return $this->imgPath;
     }
 
-    public function setImgPath(string $img_path): static
+    public function setImgPath(string $imgPath): static
     {
-        $this->img_path = $img_path;
+        $this->imgPath = $imgPath;
 
         return $this;
     }
@@ -127,25 +132,25 @@ class VideoGameArticles
      */
     public function getVideoGameReviews(): Collection
     {
-        return $this->video_game_reviews;
+        return $this->videoGameReviews;
     }
 
-    public function addVideoGameReviews(VideoGameReviews $video_game_review): static
+    public function addVideoGameReviews(VideoGameReviews $videoGameReview): static
     {
-        if (!$this->video_game_reviews->contains($video_game_review)) {
-            $this->video_game_reviews->add($video_game_review);
-            $video_game_review->setVideoGameArticles($this);
+        if (!$this->videoGameReviews->contains($videoGameReview)) {
+            $this->videoGameReviews->add($videoGameReview);
+            $videoGameReview->setVideoGameArticles($this);
         }
 
         return $this;
     }
 
-    public function removeVideoGameReviews(VideoGameReviews $video_game_review): static
+    public function removeVideoGameReviews(VideoGameReviews $videoGameReview): static
     {
-        if ($this->video_game_reviews->removeElement($video_game_review)) {
+        if ($this->videoGameReviews->removeElement($videoGameReview)) {
             // set the owning side to null (unless already changed)
-            if ($video_game_review->getVideoGameArticles() === $this) {
-                $video_game_review->setVideoGameArticles(null);
+            if ($videoGameReview->getVideoGameArticles() === $this) {
+                $videoGameReview->setVideoGameArticles(null);
             }
         }
 

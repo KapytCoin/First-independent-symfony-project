@@ -23,13 +23,13 @@ class VideoGameReviews
     #[ORM\Column]
     private ?int $reviews = null;
 
-    #[ORM\ManyToOne(inversedBy: 'video_game_reviews')]
+    #[ORM\ManyToOne(inversedBy: 'VideoGameReviews')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $users = null;
 
-    #[ORM\ManyToOne(inversedBy: 'video_game_reviews')]
+    #[ORM\ManyToOne(inversedBy: 'VideoGameReviews')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?VideoGameArticles $video_game_articles = null;
+    private ?VideoGameArticles $videoGameArticles = null;
 
     public function getId(): ?int
     {
@@ -86,12 +86,12 @@ class VideoGameReviews
 
     public function getVideoGameArticles(): ?VideoGameArticles
     {
-        return $this->video_game_articles;
+        return $this->videoGameArticles;
     }
 
-    public function setVideoGameArticles(?VideoGameArticles $video_game_articles): static
+    public function setVideoGameArticles(?VideoGameArticles $videoGameArticles): static
     {
-        $this->video_game_articles = $video_game_articles;
+        $this->videoGameArticles = $videoGameArticles;
 
         return $this;
     }
