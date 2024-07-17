@@ -26,13 +26,13 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    private array $roles = ["user"];
 
     #[ORM\Column]
-    private ?bool $online = null;
+    private ?bool $online = true;
 
     #[ORM\Column(length: 255)]
-    private ?string $access = null;
+    private ?string $access = 'allowed';
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
