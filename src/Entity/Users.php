@@ -6,10 +6,12 @@ use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'Этот email уже занят')]
 class Users implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
@@ -32,14 +34,17 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(length: 255)]
     private ?string $access = null;
 
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $email = null;
+
     /**
      * @var Collection<int, VideoGameReviews>
      */
     #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'users')]
     private Collection $videoGameReviews;
 
-    #[ORM\Column(length: 255, unique: true)]
-    private ?string $email = null;
+    #[ORM\Column]
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -54,6 +59,18 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 
     public function getNickname(): ?string
@@ -164,5 +181,17 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function eraseCredentials(): void
     {
 
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }
