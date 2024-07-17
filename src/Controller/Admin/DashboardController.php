@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 use App\Entity\VideoGameArticles;
 use App\Entity\VideoGameReviews;
 use App\Entity\Users;
-use App\Entity\Roles;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -52,9 +51,6 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToCrud('Статьи','fa-solid fa-gamepad',VideoGameArticles::class);
         yield MenuItem::linkToCrud('Отзывы','fas fa-comments',VideoGameReviews::class);
-
-        yield MenuItem::section('Пользователи');
         yield MenuItem::linkToCrud('Пользователи','fa-solid fa-user',Users::class);
-        yield MenuItem::linkToCrud('Роли пользователей','fa-regular fa-user',Roles::class);
     }
 }
