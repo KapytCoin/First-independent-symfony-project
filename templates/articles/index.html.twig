@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bombaster{% endblock %}
+{% block title %}Bombaster - коротко о играх{% endblock %}
 
 {% block body %}
-    <h2>Оставь отзыв</h2>
 
     {% for videoGameArticles in videoGameArticles %}
-        <h4>{{ videoGameArticles }}</h4>
-        <a href="{{ path('article', { id: videoGameArticles.id }) }}">Подробнее</a>
+        <h1>{{ videoGameArticles }}</h1>
+        <h2>{{ videoGameArticles.text }}<h2>
+        <a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a>
     {% endfor %}
 {% endblock %}

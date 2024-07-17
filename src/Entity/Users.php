@@ -6,9 +6,11 @@ use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+class Users implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,21 +23,23 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
     #[ORM\Column]
     private ?bool $online = null;
 
     #[ORM\Column(length: 255)]
     private ?string $access = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Roles $roles = null;
-
     /**
      * @var Collection<int, VideoGameReviews>
      */
     #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'users')]
     private Collection $videoGameReviews;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $email = null;
 
     public function __construct()
     {
@@ -100,12 +104,15 @@ class Users
         return $this;
     }
 
-    public function getRoles(): ?Roles
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setRoles(?Roles $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -140,5 +147,22 @@ class Users
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setUserIdentifier(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+
     }
 }

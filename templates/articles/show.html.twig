@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Статья - {{ videoGameArticles }}{% endblock %}
+{% block title %}Отзывы {{ videoGameArticles }}{% endblock %}
 
 {% block body %}
-    <h2>{{ videoGameArticles }} Статья</h2>
+    <h1>{{ videoGameArticles }}</h1>
+
+    <h2>{{ videoGameArticles.text }}</h2>
 
     {% if videoGameReviews|length > 0 %}
         {% for videoGameReviews in videoGameReviews %}
 
-            <h4>{{ videoGameReviews.users }}</h4>
+            <h3>{{ videoGameReviews.users }}</h3>
 
             <p>{{ videoGameReviews.text }}</p>
 
-            <p>{{ videoGameReviews.grade }}</p>
+            <h3>{{ videoGameReviews.grade }}/10</h3>
 
         {% endfor %}
     {% else %}
