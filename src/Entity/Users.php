@@ -26,7 +26,7 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $password = null;
 
     #[ORM\Column(type: 'json')]
-    private array $roles = ["user"];
+    private array $roles = ["ROLE_USER"];
 
     #[ORM\Column]
     private ?bool $online = true;
@@ -124,7 +124,7 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = "ROLE_USER";
 
         return array_unique($roles);
     }
