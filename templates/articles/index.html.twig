@@ -5,9 +5,9 @@
 {% block body %}
 
     {% for videoGameArticles in videoGameArticles %}
-        <h1>{{ videoGameArticles }}</h1>
-        <h2>{{ videoGameArticles.text }}<h2>
-        <a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a>
+        <h1 class="center article">{{ videoGameArticles }}</h1>
+        <h2 class="center text">{{ videoGameArticles.text }}<h2>
+        <p class="center"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a></p>
     {% endfor %}
     
 {% endblock %}
