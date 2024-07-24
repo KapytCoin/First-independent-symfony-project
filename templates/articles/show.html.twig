@@ -3,21 +3,21 @@
 {% block title %}Отзывы {{ videoGameArticles }}{% endblock %}
 
 {% block body %}
-    <h1>{{ videoGameArticles }}</h1>
+    <h1 class="center">{{ videoGameArticles }}</h1>
 
-    <h2>{{ videoGameArticles.text }}</h2>
+    <h2 class="center">{{ videoGameArticles.text }}</h2>
 
     {% if videoGameReviews|length > 0 %}
         {% for videoGameReviews in videoGameReviews %}
 
-            <h3>{{ videoGameReviews.users }}</h3>
+            <h3 class="center">{{ videoGameReviews.users }}</h3>
 
-            <p>{{ videoGameReviews.text }}</p>
+            <p class="center">{{ videoGameReviews.text }}</p>
 
-            <h3>{{ videoGameReviews.grade }}/10</h3>
+            <h3 class="center">{{ videoGameReviews.grade }}/10</h3>
 
         {% endfor %}
     {% else %}
-        <div>Нет комментариев</div>
+        <div class="center">Нет комментариев</div>
     {% endif %}
 {% endblock %}

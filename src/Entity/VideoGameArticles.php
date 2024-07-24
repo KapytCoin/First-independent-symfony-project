@@ -27,6 +27,9 @@ class VideoGameArticles
     #[ORM\OneToMany(targetEntity: VideoGameReviews::class, mappedBy: 'VideoGameArticles')]
     private Collection $videoGameReviews;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $preview = null;
+
     public function __construct()
     {
         $this->videoGameReviews = new ArrayCollection();
@@ -92,6 +95,18 @@ class VideoGameArticles
                 $videoGameReview->setVideoGameArticles(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPreview(): ?string
+    {
+        return $this->preview;
+    }
+
+    public function setPreview(?string $preview): static
+    {
+        $this->preview = $preview;
 
         return $this;
     }

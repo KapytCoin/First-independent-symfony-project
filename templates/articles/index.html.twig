@@ -6,7 +6,8 @@
 
     {% for videoGameArticles in videoGameArticles %}
         <h1 class="center article">{{ videoGameArticles }}</h1>
-        <h2 class="center text">{{ videoGameArticles.text }}<h2>
+        <h2 class="center text">{{ videoGameArticles.text }}</h2>
+        <img class="center" src="{{ videoGameArticles.preview }}"/>
         <p class="center"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a></p>
     {% endfor %}
     
