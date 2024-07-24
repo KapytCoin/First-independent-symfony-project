@@ -3,12 +3,42 @@
 {% block title %}Bombaster - коротко о играх{% endblock %}
 
 {% block body %}
+<table class="center">
+	<tbody>
+		<tr class="">
+			<td class="tdTrDefoult btn-new:hover btn-new"><h3>Поиск статей</h3></td>
+			<td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_login')}}">Авторизация</h3></td>
+            <td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('profile') }}">Мой профиль</h3></td>
+			<td class="tdTrDefoult"></td>
+			<td class="tdTrDefoult" style="text-align: center;"><h3>Пользователи сайта</h3></td>
+		</tr>
+		<tr>
+			<td class="tdTrDefoult" colspan="4">
 
-    {% for videoGameArticles in videoGameArticles %}
-        <h1 class="center article">{{ videoGameArticles }}</h1>
-        <h2 class="center text">{{ videoGameArticles.text }}</h2>
-        <img class="center" src="{{ videoGameArticles.preview }}"/>
-        <p class="center"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a></p>
-    {% endfor %}
+            {% for videoGameArticles in videoGameArticles %}
+                <h1 class="center article">{{ videoGameArticles }}</h1>
+                <h2 class="center text">{{ videoGameArticles.text }}</h2>
+                <img class="center" src="{{ videoGameArticles.preview }}"/>
+                <h1 class="center"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a></h1>
+                <hr></hr>
+            {% endfor %}
+
+            </td>
+			<td class="tdUsers">
+
+                {% for users in users %}
+                    <h4>{{ users.nickname }}</h4>
+                    <h4>{% if users.online == true %}Online{% else %}Offline{% endif %}</h4>
+                    <hr></hr>
+                {% endfor %}
+
+            </td>
+		</tr>
+		<tr>
+			<td class="tdTrDefoult" colspan="5">Права нихуя не защищены походу :)</td>
+		</tr>
+	</tbody>
+</table>
+
     
 {% endblock %}

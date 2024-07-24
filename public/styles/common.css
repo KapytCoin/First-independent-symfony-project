@@ -1,19 +1,16 @@
 .center {
-    width: 600px;
+    width: 1000px;
     padding: 30px;
-    margin: auto;
-    font-family: Tahoma, Geneva, sans-serif;
-    color: white;
+    color: rgb(54, 54, 54);
 }
 
 body {
-    background: url('/images/PhonBlack1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color:rgb(95, 95, 95);
 }
 
 a {
     text-decoration: none;
+    color: #0003ac;
 }
 
 .article {
@@ -21,5 +18,51 @@ a {
 }
 
 .text {
-    line-height: 130%;
+    line-height: 140%;
+    font-family: Tahoma, sans-serif;
+}
+
+table {
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+}
+
+.tableTdTrDefoult {
+    /* border: 1px solid rgb(255, 255, 255); */
+    width: auto;
+}
+
+.tdTrDefoult {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+hr {
+    margin: auto;
+}
+
+.tdUsers {
+    border-left: 2px solid rgb(0, 0, 0);
+    vertical-align: text-top;
+    text-align: center;
+}
+
+.menu {
+    border-bottom: 2px solid black;
+}
+
+.btn-new {
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    background: #c4c4c4;
+    box-shadow: 0 5px 0 #131313;
+}
+
+.btn-new:hover {
+    background: #8b8b8b;
+    box-shadow: none;
+    position: relative;
+    top: 5px;
 }
