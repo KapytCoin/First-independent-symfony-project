@@ -3,10 +3,10 @@
 {% block title %}Профиль{% endblock %}
 
 {% block body %}
-
-    <h1>Профиль</h1>
-    <h2>{{ user.nickname }}</h1>
-    <h2>{{ user.email }}</h1>
-    <h2>{{ user.isVerified }}</h1>
-
+<table>
+    <tr><td class="tdTrDefoult"><h1>Профиль</h1></td></tr>
+    <tr><td class="tdTrDefoult"><h2>Ваш никнейм: {{ user.nickname }}</h1></td></tr>
+    <tr><td class="tdTrDefoult"><h2>Ваша почта: {{ user.email }}</h1></td></tr>
+    <tr><td class="tdTrDefoult"><h2>Верификация: {% if user.isVerified == true %}Пройдена{% else %}Не пройдена{% endif %}</h1></td></tr>
+</table>
 {% endblock %}

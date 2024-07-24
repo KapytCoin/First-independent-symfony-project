@@ -6,19 +6,18 @@
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
+<table>
+        <tr><td class="tdTrDefoult"><h1>Регистрация</h1></td></tr>
 
-    <h1>Регистрация</h1>
+        <tr><td class="tdTrDefoult">{{ form_errors(registrationForm) }}</td></tr>
 
-    {{ form_errors(registrationForm) }}
+        <tr><td class="tdTrDefoult">{{ form_start(registrationForm) }}</td></tr>
+            <tr><td class="tdTrDefoult">{{ form_row(registrationForm.email, { label: 'Ваша почта' }) }}</td></tr>
+            <tr><td class="tdTrDefoult">{{ form_row(registrationForm.nickname, { label: 'Никнейм' }) }}</td></tr>
+            <tr><td class="tdTrDefoult">{{ form_row(registrationForm.plainPassword, { label: 'Пароль' }) }}</td></tr>
+            <tr><td class="tdTrDefoult">{{ form_row(registrationForm.agreeTerms) }}</td></tr>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.nickname) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Пароль'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Подтвердить</button>
-    {{ form_end(registrationForm) }}
+            <tr><td class="tdTrDefoult"><button type="submit" class="btn">Подтвердить</button></td></tr>
+        <tr><td class="tdTrDefoult">{{ form_end(registrationForm) }}</td></tr>
+</table>
 {% endblock %}

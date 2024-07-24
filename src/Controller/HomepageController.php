@@ -9,13 +9,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use App\Repository\UsersRepository;
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository): Response
+    public function index(Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, UsersRepository $usersRepository): Response
     {
-        return new Response($twig->render('articles/index.html.twig', ['videoGameArticles' => $videoGameArticlesRepository->findAll()]));
+        return new Response($twig->render('articles/index.html.twig', ['videoGameArticles' => $videoGameArticlesRepository->findAll(),
+        'users' => $usersRepository->findAll()]));
     }
 
     #[Route('/article/{id}', name: 'article')]

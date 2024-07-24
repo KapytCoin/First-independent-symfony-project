@@ -40,6 +40,6 @@ class VideoGameArticlesCrudController extends AbstractCrudController
     {
         yield TextField::new('name');
         yield TextareaField::new('text')->hideOnIndex();
-        yield TextField::new('photoFilename')->onlyOnIndex();
+        yield TextField::new('preview');
     }
 }
