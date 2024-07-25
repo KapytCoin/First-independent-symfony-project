@@ -19,7 +19,7 @@
                 <h1 class="center article">{{ videoGameArticles }}</h1>
                 <h2 class="center text">{{ videoGameArticles.text }}</h2>
                 <img class="center" src="{{ videoGameArticles.preview }}"/>
-                <h1 class="center"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Читать отзывы</a></h1>
+                <h1 class="center btn-new:hover btn-new"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Комментарии</a></h1>
                 <hr></hr>
             {% endfor %}
 

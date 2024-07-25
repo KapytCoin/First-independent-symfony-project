@@ -3,21 +3,59 @@
 {% block title %}Отзывы {{ videoGameArticles }}{% endblock %}
 
 {% block body %}
-    <h1 class="center">{{ videoGameArticles }}</h1>
+<table class="center">
+    <tr>
+        <td class="tdTrDefoult">
 
-    <h2 class="center">{{ videoGameArticles.text }}</h2>
+            <h1 class="article">{{ videoGameArticles }}</h1>
+            <img class="center" src="{{ videoGameArticles.preview }}"/>
+            <h2 class="text">{{ videoGameArticles.text }}</h2>
+            <hr></hr>
 
-    {% if videoGameReviews|length > 0 %}
-        {% for videoGameReviews in videoGameReviews %}
+        </td>
+    </tr>
+    <tr>
+        <td class="">
 
-            <h3 class="center">{{ videoGameReviews.users }}</h3>
+            {% if videoGameReviews|length > 0 %}
+                {% for videoGameReviews in videoGameReviews %}
+                    <h3 class="comments">{{ videoGameReviews.users }}</h3>
+                    <p class="comments">{{ videoGameReviews.text }}</p>
+                    <h3 class="comments">{{ videoGameReviews.grade }}/10</h3>
+                {% endfor %}
+             <hr></hr>
+             <br><br>
 
-            <p class="center">{{ videoGameReviews.text }}</p>
+            <input name="rating" value="1" id="one" type="radio" checked/>
+            <label for="one">1</label>
 
-            <h3 class="center">{{ videoGameReviews.grade }}/10</h3>
+            <input name="rating" value="2" id="two" type="radio"/>
+            <label for="two">2</label>
 
-        {% endfor %}
-    {% else %}
-        <div class="center">Нет комментариев</div>
-    {% endif %}
+            <input name="rating" value="3" id="three" type="radio"/>
+            <label for="three">3</label>
+ 
+            <input name="rating" value="4" id="four" type="radio"/>
+            <label for="four">4</label>
+            
+            <input name="rating" value="5" id="five" type="radio"/>
+            <label for="five">5</label>
+
+            <br>
+            <textarea rows="5" cols="45" name="comment">Комментировать...</textarea>
+            <br>
+            <input type="submit" value="Отправить"></p>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="tdTrDefoult">
+
+            {% else %}
+                <div class="">Нет комментариев</div>
+            {% endif %}
+
+        </td>
+    </tr>
+</table>
 {% endblock %}
