@@ -1,0 +1,13 @@
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+        {{ form_row(form.grade) }}
+        {{ form_row(form.text, { 'attr': {
+            'rows' : '5',
+            'cols' : '10' }}) }}
+        <button type="submit">Отправить</button>
+    {{ form_end(form) }}
+
+{% endblock %}

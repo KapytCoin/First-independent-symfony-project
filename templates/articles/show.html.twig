@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Отзывы {{ videoGameArticles }}{% endblock %}
+{% block title %}Отзывы{{ videoGameArticles }}{% endblock %}
 
 {% block body %}
 <table class="center">
@@ -15,18 +15,18 @@
         </td>
     </tr>
     <tr>
-        <td class="">
+        <td>
 
             {% if videoGameReviews|length > 0 %}
                 {% for videoGameReviews in videoGameReviews %}
                     <h3 class="comments">{{ videoGameReviews.users }}</h3>
                     <p class="comments">{{ videoGameReviews.text }}</p>
-                    <h3 class="comments">{{ videoGameReviews.grade }}/10</h3>
+                    <h3 class="comments">{{ videoGameReviews.grade }} / 5</h3>
                 {% endfor %}
              <hr></hr>
              <br><br>
 
-            <input name="rating" value="1" id="one" type="radio" checked/>
+            {# <input name="rating" value="1" id="one" type="radio" checked/>
             <label for="one">1</label>
 
             <input name="rating" value="2" id="two" type="radio"/>
@@ -42,9 +42,12 @@
             <label for="five">5</label>
 
             <br>
-            <textarea rows="5" cols="45" name="comment">Комментировать...</textarea>
+            <label for="commentId">Оставьте отзыв</label>
+            <textarea rows="5" cols="45" id="commentId" name="comment"></textarea>
             <br>
-            <input type="submit" value="Отправить"></p>
+            <input type="submit" value="Отправить"></p> #}
+
+            {{ render(controller('App\\Controller\\CommentController::comment')) }}
 
         </td>
     </tr>

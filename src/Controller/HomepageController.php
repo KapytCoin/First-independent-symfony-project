@@ -23,7 +23,7 @@ class HomepageController extends AbstractController
     #[Route('/article/{id}', name: 'article')]
     public function show(Environment $twig, VideoGameArticles $videoGameArticles, VideoGameReviewsRepository $videoGameReviews): Response
     {
-        return new Response($twig->render('articles/show.html.twig', ['videoGameArticles' => $videoGameArticles, 
+            return new Response($twig->render('articles/show.html.twig', ['videoGameArticles' => $videoGameArticles, 
             'videoGameReviews' => $videoGameReviews->findBy(['videoGameArticles' => $videoGameArticles])]));
     }
 }
