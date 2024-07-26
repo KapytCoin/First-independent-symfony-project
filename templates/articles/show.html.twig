@@ -1,23 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Отзывы {{ videoGameArticles }}{% endblock %}
+{% block title %}Отзывы{{ videoGameArticles }}{% endblock %}
 
 {% block body %}
-    <h1 class="center">{{ videoGameArticles }}</h1>
+<table class="center">
+    <tr>
+        <td class="tdTrDefoult">
 
-    <h2 class="center">{{ videoGameArticles.text }}</h2>
+            <h1 class="article">{{ videoGameArticles }}</h1>
+            <img class="center" src="{{ videoGameArticles.preview }}"/>
+            <h2 class="text">{{ videoGameArticles.text }}</h2>
+            <hr></hr>
 
-    {% if videoGameReviews|length > 0 %}
-        {% for videoGameReviews in videoGameReviews %}
+        </td>
+    </tr>
+    <tr>
+        <td>
 
-            <h3 class="center">{{ videoGameReviews.users }}</h3>
+            {% if videoGameReviews|length > 0 %}
+                {% for videoGameReviews in videoGameReviews %}
+                    <h3 class="comments">{{ videoGameReviews.users }}</h3>
+                    <p class="comments">{{ videoGameReviews.text }}</p>
+                    <h3 class="comments">{{ videoGameReviews.grade }} / 5</h3>
+                    <hr></hr>
+                {% endfor %}
+                <br><br>
+        </td>
+    </tr>
+    <tr>
+        <td class="tdTrDefoult">
 
-            <p class="center">{{ videoGameReviews.text }}</p>
+            {{ form_start(form) }}
+                {{ form_widget(form.grade) }}
+                {{ form_widget(form.text, { 'attr': {
+                    'rows' : '5',
+                    'cols' : '50' }}) }}
+                    <div style="color: red"><h3>{{ form_errors(form.text) }}</h3></div>
+                    <br>
+                <button type="submit">Отправить комментарий</button>
+            {{ form_end(form) }}
 
-            <h3 class="center">{{ videoGameReviews.grade }}/10</h3>
+        </td>
+    </tr>
+    <tr>
+        <td class="tdTrDefoult">
 
-        {% endfor %}
-    {% else %}
-        <div class="center">Нет комментариев</div>
-    {% endif %}
+            {% else %}
+                <div class="">Нет комментариев</div>
+            {% endif %}
+
+        </td>
+    </tr>
+</table>
 {% endblock %}
