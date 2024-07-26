@@ -29,17 +29,15 @@
     </tr>
     <tr>
         <td class="tdTrDefoult">
-
-            {{ form_start(form) }}
-                {{ form_widget(form.grade) }}
-                {{ form_widget(form.text, { 'attr': {
-                    'rows' : '5',
-                    'cols' : '50' }}) }}
-                    <div style="color: red"><h3>{{ form_errors(form.text) }}</h3></div>
-                    <br>
-                <button type="submit">Отправить комментарий</button>
-            {{ form_end(form) }}
-
+                {{ form_start(form) }}
+                    {{ form_widget(form.grade) }}
+                    {{ form_widget(form.text, { 'attr': {
+                        'rows' : '5',
+                        'cols' : '50' }}) }}
+                        <div style="color: red"><h3>{{ form_errors(form.text) }}</h3></div>
+                        <br>
+                    <button type="submit">Отправить комментарий</button>
+                {{ form_end(form) }}
         </td>
     </tr>
     <tr>
