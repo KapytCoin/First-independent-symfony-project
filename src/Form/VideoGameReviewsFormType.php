@@ -2,14 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Users;
-use App\Entity\VideoGameArticles;
+use Symfony\Component\Validator\Constraints\Length;
 use App\Entity\VideoGameReviews;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class VideoGameReviewsFormType extends AbstractType
@@ -17,19 +15,25 @@ class VideoGameReviewsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('grade', IntegerType::class, [
-                ])
+            ->add('grade', ChoiceType::class, [
+                'choices' => [
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5'
+                ],
+                'expanded' => true,
+                'multiple' => false
+            ])
             ->add('text', TextareaType::class, [
-                ])
-            ->add('users', EntityType::class, [
-                'class' => Users::class,
-                'choice_label' => 'id',
-            ])
-            ->add('videoGameArticles', EntityType::class, [
-                'class' => VideoGameArticles::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            'constraints' => [
+                new Length([
+                    'min' => 10,
+                    'minMessage' => 'Комментарий должен быть больше {{ limit }} символов',
+                    'max' => 700,
+                    'maxMessage' => 'Комментарий не должен превышать {{ limit }} символов'
+                    ])]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

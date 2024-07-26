@@ -22,32 +22,23 @@
                     <h3 class="comments">{{ videoGameReviews.users }}</h3>
                     <p class="comments">{{ videoGameReviews.text }}</p>
                     <h3 class="comments">{{ videoGameReviews.grade }} / 5</h3>
+                    <hr></hr>
                 {% endfor %}
-             <hr></hr>
-             <br><br>
+                <br><br>
+        </td>
+    </tr>
+    <tr>
+        <td class="tdTrDefoult">
 
-            {# <input name="rating" value="1" id="one" type="radio" checked/>
-            <label for="one">1</label>
-
-            <input name="rating" value="2" id="two" type="radio"/>
-            <label for="two">2</label>
-
-            <input name="rating" value="3" id="three" type="radio"/>
-            <label for="three">3</label>
- 
-            <input name="rating" value="4" id="four" type="radio"/>
-            <label for="four">4</label>
-            
-            <input name="rating" value="5" id="five" type="radio"/>
-            <label for="five">5</label>
-
-            <br>
-            <label for="commentId">Оставьте отзыв</label>
-            <textarea rows="5" cols="45" id="commentId" name="comment"></textarea>
-            <br>
-            <input type="submit" value="Отправить"></p> #}
-
-            {{ render(controller('App\\Controller\\CommentController::comment')) }}
+            {{ form_start(form) }}
+                {{ form_widget(form.grade) }}
+                {{ form_widget(form.text, { 'attr': {
+                    'rows' : '5',
+                    'cols' : '50' }}) }}
+                    <div style="color: red"><h3>{{ form_errors(form.text) }}</h3></div>
+                    <br>
+                <button type="submit">Отправить комментарий</button>
+            {{ form_end(form) }}
 
         </td>
     </tr>
