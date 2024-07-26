@@ -32,7 +32,15 @@ class HomepageController extends AbstractController
         $form = $this->createForm(VideoGameReviewsFormType::class, $review);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($user === null) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        elseif (in_array("ROLE_BAN", $user->getRoles())) {
+            return $this->redirectToRoute('app_ban');
+        }
+
+        elseif ($form->isSubmitted() && $form->isValid()) {
 
             $review->setGrade($form->get('grade')->getData());
             $review->setText($form->get('text')->getData());
@@ -41,11 +49,6 @@ class HomepageController extends AbstractController
 
             $entityManager->persist($review);
             $entityManager->flush();
-
-        } elseif ($user === null) {
-            return $this->redirectToRoute('app_login');
-        } elseif (in_array("ROLE_BAN", $user->getRoles())) {
-            echo('вы забанены');
         }
 
         return new Response($twig->render('articles/show.html.twig', [

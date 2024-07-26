@@ -70,3 +70,7 @@ hr {
 .comments {
     text-align: left;
 }
+
+.ban {
+    color: red;
+}
