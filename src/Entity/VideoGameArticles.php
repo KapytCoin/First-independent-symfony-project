@@ -30,6 +30,12 @@ class VideoGameArticles
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $preview = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $all_reviews = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $all_grades = null;
+
     public function __construct()
     {
         $this->videoGameReviews = new ArrayCollection();
@@ -107,6 +113,30 @@ class VideoGameArticles
     public function setPreview(?string $preview): static
     {
         $this->preview = $preview;
+
+        return $this;
+    }
+
+    public function getAllReviews(): ?int
+    {
+        return $this->all_reviews;
+    }
+
+    public function setAllReviews(?int $all_reviews): static
+    {
+        $this->all_reviews = $all_reviews;
+
+        return $this;
+    }
+
+    public function getAllGrades(): ?int
+    {
+        return $this->all_grades;
+    }
+
+    public function setAllGrades(?int $all_grades): static
+    {
+        $this->all_grades = $all_grades;
 
         return $this;
     }
