@@ -17,17 +17,14 @@ class AvatarTypeFormType extends AbstractType
             // ...
             ->add('avatars', FileType::class, [
                 'label' => 'Avatar (.jpg or .png file)',
-
                 'mapped' => false,
-
                 'required' => false,
-
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'application/jpg',
-                            'application/png',
+                            'image/jpeg',
+                            'image/png'
                         ],
                         'mimeTypesMessage' => 'Пожалуйста загрузите .jpg или .png файл',
                     ])
