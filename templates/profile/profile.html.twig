@@ -6,6 +6,13 @@
 <table>
     <tr><td class="tdTrDefoult"><h1>Профиль</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Ваш никнейм: {{ user.nickname }}</h1></td></tr>
+    <tr><td class="tdTrDefoult"><h2>Ваша аватарка: 
+
+    {{ form_start(form) }}
+        {{ form_widget(form.avatars) }}
+        {{ form_errors(form.avatars) }}
+    {{ form_end(form) }}</h2></td></tr>
+    
     <tr><td class="tdTrDefoult"><h2>Ваша почта: {{ user.email }}</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Верификация: {% if user.isVerified == true %}Пройдена{% else %}Не пройдена{% endif %}</h1></td></tr>
 </table>

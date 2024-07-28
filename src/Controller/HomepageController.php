@@ -18,26 +18,9 @@ use App\Form\VideoGameReviewsFormType;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
+    public function index(EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
     {
-        // $queryBuilder = $entityManager->createQueryBuilder();
-
-        // $queryBuilder
-        // ->select('COUNT(vgr.id) as totalReviews', 'vga.id as articleId')
-        // ->from('VideoGameReviews', 'vgr')
-        // ->innerJoin('vgr', 'App\Entity\VideoGameArticles', 'vga', 'vgr.video_game_articles_id = vga.id')
-        // ->groupBy('vga.id');
-        
-        // $subQuery = $queryBuilder->getDQL();
-        
-        // $queryBuilder = $entityManager->createQueryBuilder();
-        
-        // $queryBuilder
-        // ->update('App\Entity\VideoGameArticles', 'vga')
-        // ->set('vga.all_reviews', $subQuery);
-        
-        // $query = $queryBuilder->getQuery();
-        // $query->execute();
+        $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
 
         return new Response($twig->render('articles/index.html.twig', [
             'videoGameArticles' => $videoGameArticlesRepository->findAll(),

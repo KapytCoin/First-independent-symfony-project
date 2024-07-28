@@ -46,6 +46,9 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatars = null;
+
     public function __construct()
     {
         $this->videoGameReviews = new ArrayCollection();
@@ -191,6 +194,18 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getAvatars(): ?string
+    {
+        return $this->avatars;
+    }
+
+    public function setAvatars(?string $avatars): static
+    {
+        $this->avatars = $avatars;
 
         return $this;
     }
