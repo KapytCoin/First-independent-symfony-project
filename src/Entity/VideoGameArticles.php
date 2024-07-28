@@ -31,10 +31,10 @@ class VideoGameArticles
     private ?string $preview = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $all_reviews = null;
+    private ?int $allReviews = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $all_grades = null;
+    private ?int $allGrades = null;
 
     public function __construct()
     {
@@ -119,24 +119,24 @@ class VideoGameArticles
 
     public function getAllReviews(): ?int
     {
-        return $this->all_reviews;
+        return $this->allReviews;
     }
 
-    public function setAllReviews(?int $all_reviews): static
+    public function setAllReviews(?int $allReviews): static
     {
-        $this->all_reviews = $all_reviews;
+        $this->allReviews = $allReviews;
 
         return $this;
     }
 
     public function getAllGrades(): ?int
     {
-        return $this->all_grades;
+        return $this->allGrades;
     }
 
-    public function setAllGrades(?int $all_grades): static
+    public function setAllGrades(?int $allGrades): static
     {
-        $this->all_grades = $all_grades;
+        $this->allGrades = $allGrades;
 
         return $this;
     }

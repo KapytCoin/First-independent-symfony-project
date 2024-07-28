@@ -16,6 +16,112 @@ class VideoGameArticlesRepository extends ServiceEntityRepository
         parent::__construct($registry, VideoGameArticles::class);
     }
 
+    public function countReviewsAndAverageGrades(): int
+{
+    $conn = $this->getEntityManager()->getConnection();
+
+    $updateSql = 'WITH
+        avg_grades AS (
+        SELECT
+        video_game_articles_id,
+        AVG(grade) AS avg_grade,
+        COUNT(id) AS review_count
+        FROM
+        video_game_reviews
+        GROUP BY
+        video_game_articles_id
+        )
+        UPDATE video_game_articles
+        SET
+        all_grades = avg_grades.avg_grade,
+        all_reviews = avg_grades.review_count
+        FROM
+        avg_grades
+        WHERE
+        video_game_articles.id = avg_grades.video_game_articles_id;';
+
+    $conn->exec($updateSql);
+
+    $selectSql = 'SELECT
+        *
+        FROM
+        video_game_articles
+        ORDER BY
+        all_reviews;';
+
+    $resultSet = $conn->executeQuery($selectSql);
+    $articles = $resultSet->fetchAllAssociative();
+
+    return (int) count($articles);
+}
+    // public function countReviewsAndAverageGrades(): int
+    // {
+    //     $conn = $this->getEntityManager()->getConnection();
+
+    //         $sql = 'WITH
+    //         avg_grades AS (
+    //         SELECT
+    //         video_game_articles_id,
+    //         AVG(grade) AS avg_grade,
+    //         COUNT(id) AS review_count
+    //         FROM
+    //         video_game_reviews
+    //         GROUP BY
+    //         video_game_articles_id
+    //         )
+    //         UPDATE video_game_articles
+    //         SET
+    //         all_grades = avg_grades.avg_grade,
+    //         all_reviews = avg_grades.review_count
+    //         FROM
+    //         avg_grades
+    //         WHERE
+    //         video_game_articles.id = avg_grades.video_game_articles_id;
+              
+    //         SELECT
+    //         *
+    //         FROM
+    //         video_game_articles
+    //         ORDER BY
+    //         all_reviews;';
+
+    //     $resultSet = $conn->executeQuery($sql);
+    //     return (int) $resultSet->fetchAllAssociative();
+    // }
+
+    // public function averageRating(): int
+    // {
+    //     $connect = $this->getEntityManager()->getConnection();
+
+        // $sqlQuery = 'WITH
+        //         avg_grades AS (
+        //         SELECT
+        //         video_game_articles_id,
+        //         AVG(grade) AS avg_grade
+        //         FROM
+        //         video_game_reviews
+        //         GROUP BY
+        //         video_game_articles_id
+        //         )
+        //         UPDATE video_game_articles
+        //         SET
+        //         all_grades = avg_grades.avg_grade
+        //         FROM
+        //         avg_grades
+        //         WHERE
+        //         video_game_articles.id = avg_grades.video_game_articles_id;
+
+        //         SELECT
+        //         *
+        //         FROM
+        //         video_game_articles
+        //         ORDER BY
+        //         all_reviews;';
+
+    //     $result = $connect->executeQuery($sqlQuery);
+    //     return (int) $result->fetchAllAssociative();
+    // }
+
     //    /**
     //     * @return VideoGameArticles[] Returns an array of VideoGameArticles objects
     //     */
