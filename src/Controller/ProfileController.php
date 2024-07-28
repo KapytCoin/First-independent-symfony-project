@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,8 +19,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProfileController extends AbstractController
 {   
     #[Route('/profile', name: 'profile')]
-    public function index(Environment $twig, UsersRepository $usersRepository, Request $request,
-    SluggerInterface $slugger, #[Autowire('%kernel.project_dir%/public/uploads/brochures')] string $avatarsDirectory
+    public function index(EntityManagerInterface $entityManager, Environment $twig, UsersRepository $usersRepository, Request $request,
+    SluggerInterface $slugger, #[Autowire('%kernel.project_dir%/public/uploads')] string $avatarsDirectory
     ): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -27,13 +28,15 @@ class ProfileController extends AbstractController
         $userNickname = $user->getNickname();
         $usersEmail = $user->getEmail();
         $userIsVerified = $user->IsVerified();
+        $userAvatar = 'uploads/'.$user->getAvatars();
         $user = [
             'nickname' => "$userNickname",
             'email' => "$usersEmail",
-            'isVerified' => "$userIsVerified"
+            'isVerified' => "$userIsVerified",
+            'avatar' => "$userAvatar"
         ];
 
-        $avatar = new Users();
+        $avatar = $this->getUser();
         $form = $this->createForm(AvatarTypeFormType::class, $avatar);
         $form->handleRequest($request);
 
@@ -52,6 +55,9 @@ class ProfileController extends AbstractController
                 }
 
                 $avatar->setAvatars($newFilename);
+
+                $entityManager->persist($avatar);
+                $entityManager->flush();
             }
 
             return $this->redirectToRoute('profile');

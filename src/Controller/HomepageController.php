@@ -21,10 +21,13 @@ class HomepageController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
     {
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
+        $path = 'uploads/' . '';
 
         return new Response($twig->render('articles/index.html.twig', [
             'videoGameArticles' => $videoGameArticlesRepository->findAll(),
-            'users' => $usersRepository->findAll()]));
+            'users' => $usersRepository->findAll(),
+            'path' => $path
+        ]));
     }
 
     #[Route('/article/{id}', name: 'article')]

@@ -7,12 +7,16 @@
     <tr><td class="tdTrDefoult"><h1>Профиль</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Ваш никнейм: {{ user.nickname }}</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Ваша аватарка: 
+    <br>
+    <img width="100" height="100" src="{{ user.avatar }}"/>
 
     {{ form_start(form) }}
         {{ form_widget(form.avatars) }}
-        {{ form_errors(form.avatars) }}
+        <div style="color: red">{{ form_errors(form.avatars) }}</div>
+        <br>
+        <button type="submit">Готово</button>
     {{ form_end(form) }}</h2></td></tr>
-    
+
     <tr><td class="tdTrDefoult"><h2>Ваша почта: {{ user.email }}</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Верификация: {% if user.isVerified == true %}Пройдена{% else %}Не пройдена{% endif %}</h1></td></tr>
 </table>
