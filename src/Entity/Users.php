@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,12 +29,6 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = ["ROLE_USER"];
 
-    #[ORM\Column]
-    private ?bool $online = true;
-
-    #[ORM\Column(length: 255)]
-    private ?string $access = 'allowed';
-
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
@@ -48,6 +43,12 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatars = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastOnline = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastOnlineString = null;
 
     public function __construct()
     {
@@ -96,30 +97,6 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function isOnline(): ?bool
-    {
-        return $this->online;
-    }
-
-    public function setOnline(bool $online): static
-    {
-        $this->online = $online;
-
-        return $this;
-    }
-
-    public function getAccess(): ?string
-    {
-        return $this->access;
-    }
-
-    public function setAccess(string $access): static
-    {
-        $this->access = $access;
 
         return $this;
     }
@@ -206,6 +183,30 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function setAvatars(?string $avatars): static
     {
         $this->avatars = $avatars;
+
+        return $this;
+    }
+
+    public function getLastOnline(): ?\DateTimeInterface
+    {
+        return $this->lastOnline;
+    }
+
+    public function setLastOnline(?\DateTimeInterface $lastOnline): static
+    {
+        $this->lastOnline = $lastOnline;
+
+        return $this;
+    }
+
+    public function getLastOnlineString(): ?string
+    {
+        return $this->lastOnlineString;
+    }
+
+    public function setLastOnlineString(?string $lastOnlineString): static
+    {
+        $this->lastOnlineString = $lastOnlineString;
 
         return $this;
     }
