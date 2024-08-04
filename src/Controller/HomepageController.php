@@ -14,19 +14,33 @@ use App\Repository\UsersRepository;
 use App\Entity\VideoGameReviews;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\VideoGameReviewsFormType;
+use App\Entity\Users;
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
     public function index(EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
     {
+        $user = $this->getUser();
+
+        if ($user !== null) {
+        $getLastOnline = $user->getLastOnline();
+        $serializeLastOnline = serialize($getLastOnline);
+        $strstrLastOnline = strstr($serializeLastOnline, '2024');
+        $wasLastOnline = strstr($strstrLastOnline, '00', true);
+        $res = $user->setLastOnlineString($wasLastOnline);
+
+        $entityManager->persist($res);
+        $entityManager->flush();
+        }
+        
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
 
         return new Response($twig->render('articles/index.html.twig', [
             'videoGameArticles' => $videoGameArticlesRepository->findAll(),
             'users' => $usersRepository->findAll(),
-            'path' => $path
+            'path' => $path,
         ]));
     }
 

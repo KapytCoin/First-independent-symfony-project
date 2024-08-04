@@ -30,7 +30,7 @@
                 {% for users in users %}
                     <h4>{{ users.nickname }}</h4>
                     <img width="80" height="80" src="{{ path ~ users.avatars }}"/>
-                    <h4>{% if users.online == true %}Online{% else %}Offline{% endif %}</h4>
+                    <h4>Последний раз был онлайн: {{ users.lastOnlineString }}</h4>
                     <hr></hr>
                 {% endfor %}
 
