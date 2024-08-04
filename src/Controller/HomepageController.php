@@ -31,12 +31,13 @@ class HomepageController extends AbstractController
     }
 
     #[Route('/article/{id}', name: 'article')]
-    public function show(Environment $twig, VideoGameArticles $videoGameArticles, VideoGameReviewsRepository $videoGameReviews, EntityManagerInterface $entityManager, Request $request): Response
+    public function show(UsersRepository $usersRepository, Environment $twig, VideoGameArticles $videoGameArticles, VideoGameReviewsRepository $videoGameReviews, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $this->getUser();
         $review = new VideoGameReviews();
         $form = $this->createForm(VideoGameReviewsFormType::class, $review);
         $form->handleRequest($request);
+        $path = '../uploads/' . '';
 
         if ($user === null) {
             return $this->redirectToRoute('app_login');
@@ -60,7 +61,9 @@ class HomepageController extends AbstractController
         return new Response($twig->render('articles/show.html.twig', [
             'form' => $form->createView(),
             'videoGameArticles' => $videoGameArticles,
-            'videoGameReviews' => $videoGameReviews->findBy(['videoGameArticles' => $videoGameArticles])
+            'videoGameReviews' => $videoGameReviews->findBy(['videoGameArticles' => $videoGameArticles]),
+            'users' => $usersRepository->findAll(),
+            'path' => $path,
         ]));
     }
 }

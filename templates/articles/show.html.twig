@@ -20,15 +20,20 @@
             {% if videoGameReviews|length > 0 %}
                 {% for videoGameReviews in videoGameReviews %}
                     <h3 class="comments">{{ videoGameReviews.users }}</h3>
+                        {% if videoGameReviews.users.avatars %}
+                            <img width="80" height="80" src="{{ path ~ videoGameReviews.users.avatars }}"/>
+                        {% endif %}
                     <p class="comments">{{ videoGameReviews.text }}</p>
                     <h3 class="comments">{{ videoGameReviews.grade }} / 5</h3>
                     <hr></hr>
                 {% endfor %}
+
                 <br><br>
         </td>
     </tr>
     <tr>
         <td class="tdTrDefoult">
+
                 {{ form_start(form) }}
                     {{ form_widget(form.grade) }}
                     {{ form_widget(form.text, { 'attr': {
@@ -38,7 +43,6 @@
                         <br>
                     <button type="submit">Отправить комментарий</button>
                 {{ form_end(form) }}
-        </td>
     </tr>
     <tr>
         <td class="tdTrDefoult">
