@@ -19,5 +19,7 @@
 
     <tr><td class="tdTrDefoult"><h2>Ваша почта: {{ user.email }}</h1></td></tr>
     <tr><td class="tdTrDefoult"><h2>Верификация: {% if user.isVerified == true %}Пройдена{% else %}Не пройдена{% endif %}</h1></td></tr>
+    <tr><td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_reset_password') }}">Сменить пароль</h3></td></tr>
+    <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('homepage') }}">На главную страницу</h2></td></tr>
 </table>
 {% endblock %}
