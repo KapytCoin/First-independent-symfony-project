@@ -14,7 +14,6 @@ use App\Repository\UsersRepository;
 use App\Entity\VideoGameReviews;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\VideoGameReviewsFormType;
-use App\Entity\Users;
 
 class HomepageController extends AbstractController
 {
@@ -24,16 +23,25 @@ class HomepageController extends AbstractController
         $user = $this->getUser();
 
         if ($user !== null) {
+        $role = $this->getUser()->getRoles();
         $getLastOnline = $user->getLastOnline();
         $serializeLastOnline = serialize($getLastOnline);
         $strstrLastOnline = strstr($serializeLastOnline, '2024');
         $wasLastOnline = strstr($strstrLastOnline, '00', true);
         $res = $user->setLastOnlineString($wasLastOnline);
 
+        if (@$role[1] == 'ROLE_ADMIN' and @$role[2] == 'ROLE_USER' OR @$role[1] == 'ROLE_USER' and @$role[2] == 'ROLE_USER') {
+            $role = 'ROLE_ADMIN';
+        } else {
+            $role = 'ROLE_NOT_ADMIN';
+        }
+
         $entityManager->persist($res);
         $entityManager->flush();
+        } else {
+            $role = 'ROLE_NOT_ADMIN';
         }
-        
+
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
 
@@ -41,6 +49,7 @@ class HomepageController extends AbstractController
             'videoGameArticles' => $videoGameArticlesRepository->findAll(),
             'users' => $usersRepository->findAll(),
             'path' => $path,
+            'isAdmin' => $role
         ]));
     }
 
