@@ -6,6 +6,7 @@ use App\Repository\VideoGameArticlesRepository;
 use App\Entity\VideoGameArticles;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +19,7 @@ use App\Form\VideoGameReviewsFormType;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
+    public function index(Request $request, PaginatorInterface $paginatorInterface, EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
     {
         $user = $this->getUser();
 
@@ -42,11 +43,14 @@ class HomepageController extends AbstractController
             $role = 'ROLE_NOT_ADMIN';
         }
 
+        $articles = $entityManager->getRepository(VideoGameArticles::class)->findAll();
+        $videoGameArticles = $paginatorInterface->paginate($articles, $request->get('page'), 3);
+
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
 
         return new Response($twig->render('articles/index.html.twig', [
-            'videoGameArticles' => $videoGameArticlesRepository->findAll(),
+            'videoGameArticles' => $videoGameArticles,
             'users' => $usersRepository->findAll(),
             'path' => $path,
             'isAdmin' => $role

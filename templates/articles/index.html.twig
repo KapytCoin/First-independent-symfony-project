@@ -24,6 +24,9 @@
                 <h1 class="center btn-new:hover btn-new"><a href="{{ path('article', { id: videoGameArticles.id }) }}">Комментарии ({{ videoGameArticles.allReviews }})</a></h1>
                 <hr></hr>
             {% endfor %}
+            <br>
+            <h2>{{ knp_pagination_render(videoGameArticles) }}</h2>
+            <hr>
 
             </td>
 			<td class="tdUsers">
