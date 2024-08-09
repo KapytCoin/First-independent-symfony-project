@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\VideoGameArticles;
+use App\Repository\VideoGameArticlesRepository;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -14,7 +16,6 @@ use App\Repository\UsersRepository;
 use App\Entity\VideoGameReviews;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\VideoGameReviewsFormType;
-use App\Form\SearchArticlesFormType;
 
 class HomepageController extends AbstractController
 {
@@ -104,6 +105,25 @@ class HomepageController extends AbstractController
             'videoGameReviews' => $videoGameReviews->findBy(['videoGameArticles' => $videoGameArticles]),
             'users' => $usersRepository->findAll(),
             'path' => $path,
+        ]));
+    }
+
+    #[Route('/search', name: 'search_article')]
+    public function searchArticle(Request $request, EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository): Response
+    {
+        $searchArticle = $request->query->get('search');
+        $videoGameArticles = $entityManager->getRepository(VideoGameArticles::class)->findByName($searchArticle);
+        
+        if($videoGameArticles) {
+            foreach($videoGameArticles as $item) {
+                $findId = ($item->getId());
+            }
+        }
+        dd($findId); // Осталось вернуть страницу статьи
+
+        return new Response($twig->render('articles/search.html.twig', [
+            'search' => $searchArticle,
+            'articles' => $videoGameArticles,
         ]));
     }
 }

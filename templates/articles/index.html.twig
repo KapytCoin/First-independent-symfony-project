@@ -7,7 +7,12 @@
 <table class="center">
 	<tbody>
 		<tr class="">
-			<td class="tdTrDefoult btn-new:hover btn-new"><h3>Поиск статей</h3></td>
+			<td class="tdTrDefoult btn-new:hover btn-new">
+            <form method="GET" action="{{ path('search_article') }}">
+            <input type="text" name="search" placeholder="Название игры">
+            <button type="submit">Искать</button>
+            </form>
+            </td>
 			<td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_login')}}">Авторизация</h3></td>
             <td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('profile') }}">Мой профиль</h3></td>
 			<td class="tdTrDefoult"></td>
