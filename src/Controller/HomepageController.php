@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\VideoGameArticlesRepository;
 use App\Entity\VideoGameArticles;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +14,17 @@ use App\Repository\UsersRepository;
 use App\Entity\VideoGameReviews;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\VideoGameReviewsFormType;
+use App\Form\SearchArticlesFormType;
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(Request $request, PaginatorInterface $paginatorInterface, EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
+    public function index(Request $request, 
+    PaginatorInterface $paginatorInterface, 
+    EntityManagerInterface $entityManager, 
+    Environment $twig, 
+    UsersRepository $usersRepository,
+    ): Response
     {
         $user = $this->getUser();
 
@@ -43,8 +48,11 @@ class HomepageController extends AbstractController
             $role = 'ROLE_NOT_ADMIN';
         }
 
+        $page = $request->get('page'); 
+        $page = $page ? (int) $page : 1;
+
         $articles = $entityManager->getRepository(VideoGameArticles::class)->findAll();
-        $videoGameArticles = $paginatorInterface->paginate($articles, $request->get('page'), 3);
+        $videoGameArticles = $paginatorInterface->paginate($articles, $page, 3);
 
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
@@ -53,12 +61,17 @@ class HomepageController extends AbstractController
             'videoGameArticles' => $videoGameArticles,
             'users' => $usersRepository->findAll(),
             'path' => $path,
-            'isAdmin' => $role
+            'isAdmin' => $role,
         ]));
     }
 
     #[Route('/article/{id}', name: 'article')]
-    public function show(UsersRepository $usersRepository, Environment $twig, VideoGameArticles $videoGameArticles, VideoGameReviewsRepository $videoGameReviews, EntityManagerInterface $entityManager, Request $request): Response
+    public function show(UsersRepository $usersRepository, 
+    Environment $twig,
+    VideoGameArticles $videoGameArticles, 
+    VideoGameReviewsRepository $videoGameReviews, 
+    EntityManagerInterface $entityManager, 
+    Request $request): Response
     {
         $user = $this->getUser();
         $review = new VideoGameReviews();
