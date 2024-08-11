@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Профиль{% endblock %}
+{% block title %}{{ targetUser.nickname }}{% endblock %}
 
 {% block body %}
 <table>
@@ -11,7 +11,23 @@
     {% if targetUser.roles['1'] is defined %}{% if (targetUser.roles['1'] == 'ROLE_BAN') or (targetUser.roles['2'] == 'ROLE_BAN') %}
     <tr><td class="tdTrDefoult ban"><h2>Пользователь получил запрет на комментарии</h2></td></tr>{% endif %}{% endif %}
 
-    <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('anotherProfile', { nickname: targetUser.nickname }) }}">Добавить в друзья</h2></td></tr>
+    
+    {% if statusSent == 'Request sent' %}
+        <tr><td><h2 class="tdTrDefoult green">Запрос дружбы отправлен!</h2></td></tr>
+
+    {% elseif statusAccept == 'Request approved' %}
+        <tr><td><h2 class="tdTrDefoult green">Теперь вы друзья!</h2></td></tr>
+
+    {% elseif statusRejected == 'Request rejected' %}
+        <tr><td><h2 class="tdTrDefoult red">Дружба отклонена :(</h2></td></tr>
+    
+    {% else %}
+        <tr><td class="tdTrDefoult"><form action="{{ path('anotherProfile', { nickname: users.nickname }) }}" method="post">
+        <input name="addFriend" value="isPressed" type="hidden">
+        <button type="submit">Добавить в друзья</button>
+        </form></td></tr>
+    {% endif %}
+
     <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('homepage') }}">На главную страницу</h2></td></tr>
 </table>
 {% endblock %}

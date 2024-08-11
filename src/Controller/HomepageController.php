@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\VideoGameArticles;
-use App\Repository\VideoGameArticlesRepository;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -127,19 +126,6 @@ class HomepageController extends AbstractController
         return new Response($twig->render('articles/search.html.twig', [
             'search' => $searchArticle,
             'articles' => $videoGameArticles,
-        ]));
-    }
-
-    #[Route('/profile/{nickname}', name: 'anotherProfile')]
-    public function anotherProfile(Environment $twig, UsersRepository $usersRepository, Request $request)
-    {
-        $nickname = $request->attributes->get('nickname');
-        $targetUser = $usersRepository->findOneBy(['nickname' => $nickname]);
-        $pathAvatar = '../uploads/' . '';
-
-        return new Response($twig->render('profile/anotherProfile.html.twig', [
-            'targetUser' => $targetUser,
-            'pathAvatar' => $pathAvatar
         ]));
     }
 }
