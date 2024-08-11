@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\VideoGameArticlesRepository;
 use App\Entity\VideoGameArticles;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +18,12 @@ use App\Form\VideoGameReviewsFormType;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(Request $request, PaginatorInterface $paginatorInterface, EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository, VideoGameReviewsRepository $videoGameReviewsRepository, UsersRepository $usersRepository): Response
+    public function index(Request $request, 
+    PaginatorInterface $paginatorInterface, 
+    EntityManagerInterface $entityManager, 
+    Environment $twig, 
+    UsersRepository $usersRepository,
+    ): Response
     {
         $user = $this->getUser();
 
@@ -31,7 +35,7 @@ class HomepageController extends AbstractController
         $wasLastOnline = strstr($strstrLastOnline, '00', true);
         $res = $user->setLastOnlineString($wasLastOnline);
 
-        if (@$role[1] == 'ROLE_ADMIN' and @$role[2] == 'ROLE_USER' OR @$role[1] == 'ROLE_USER' and @$role[2] == 'ROLE_USER') {
+        if (@$role[1] == 'ROLE_ADMIN' && @$role[2] == 'ROLE_USER' || @$role[1] == 'ROLE_USER' && @$role[2] == 'ROLE_USER') {
             $role = 'ROLE_ADMIN';
         } else {
             $role = 'ROLE_NOT_ADMIN';
@@ -43,8 +47,11 @@ class HomepageController extends AbstractController
             $role = 'ROLE_NOT_ADMIN';
         }
 
+        $page = $request->get('page'); 
+        $page = $page ? (int) $page : 1;
+
         $articles = $entityManager->getRepository(VideoGameArticles::class)->findAll();
-        $videoGameArticles = $paginatorInterface->paginate($articles, $request->get('page'), 3);
+        $videoGameArticles = $paginatorInterface->paginate($articles, $page, 3);
 
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
@@ -53,12 +60,17 @@ class HomepageController extends AbstractController
             'videoGameArticles' => $videoGameArticles,
             'users' => $usersRepository->findAll(),
             'path' => $path,
-            'isAdmin' => $role
+            'isAdmin' => $role,
         ]));
     }
 
     #[Route('/article/{id}', name: 'article')]
-    public function show(UsersRepository $usersRepository, Environment $twig, VideoGameArticles $videoGameArticles, VideoGameReviewsRepository $videoGameReviews, EntityManagerInterface $entityManager, Request $request): Response
+    public function show(UsersRepository $usersRepository, 
+    Environment $twig,
+    VideoGameArticles $videoGameArticles, 
+    VideoGameReviewsRepository $videoGameReviews, 
+    EntityManagerInterface $entityManager, 
+    Request $request): Response
     {
         $user = $this->getUser();
         $review = new VideoGameReviews();
@@ -91,6 +103,29 @@ class HomepageController extends AbstractController
             'videoGameReviews' => $videoGameReviews->findBy(['videoGameArticles' => $videoGameArticles]),
             'users' => $usersRepository->findAll(),
             'path' => $path,
+        ]));
+    }
+
+    #[Route('/search', name: 'search_article')]
+    public function searchArticle(Request $request,
+    EntityManagerInterface $entityManager,
+    Environment $twig,
+    ): Response
+    {
+        $searchArticle = $request->query->get('search');
+        $videoGameArticles = $entityManager->getRepository(VideoGameArticles::class)->findByName($searchArticle);
+        
+        if($videoGameArticles) {
+            foreach($videoGameArticles as $item) {
+                $findId = ($item->getId());
+            }
+
+        return $this->redirectToRoute('article', ['id' => $findId]);
+        }
+
+        return new Response($twig->render('articles/search.html.twig', [
+            'search' => $searchArticle,
+            'articles' => $videoGameArticles,
         ]));
     }
 }

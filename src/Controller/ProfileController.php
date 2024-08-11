@@ -18,7 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProfileController extends AbstractController
 {   
     #[Route('/profile', name: 'profile')]
-    public function index(EntityManagerInterface $entityManager, Environment $twig, UsersRepository $usersRepository, Request $request,
+    public function index(EntityManagerInterface $entityManager, Environment $twig, Request $request,
     SluggerInterface $slugger, #[Autowire('%kernel.project_dir%/public/uploads')] string $avatarsDirectory
     ): Response
     {

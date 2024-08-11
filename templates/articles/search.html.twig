@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    {% if articles is not empty %}
+
+        
+
+    {% else %}
+
+    <table>
+        <td><h1 class="tdTrDefoult">Нет статьи для названия '{{ search }}'</h1></td>
+        <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('homepage') }}">На главную страницу</h2></td></tr>
+    </table>
+
+    {% endif %}
+{% endblock %}
