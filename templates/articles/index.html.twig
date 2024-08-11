@@ -39,7 +39,9 @@
                 {% for users in users %}
                     <h4>{{ users.nickname }}</h4>
                     <img width="80" height="80" src="{{ path ~ users.avatars }}"/>
-                    <h4>Последний раз был онлайн: {{ users.lastOnlineString }}</h4>
+                    <br>
+                    <a href="{{ path('anotherProfile', { nickname: users.nickname }) }}">Профиль</a>
+                    <h4>Последний раз в онлайне: {{ users.lastOnlineString }}</h4>
                     <hr></hr>
                 {% endfor %}
 

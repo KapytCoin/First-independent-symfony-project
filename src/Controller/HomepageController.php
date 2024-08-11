@@ -8,7 +8,6 @@ use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -37,7 +36,7 @@ class HomepageController extends AbstractController
         $wasLastOnline = strstr($strstrLastOnline, '00', true);
         $res = $user->setLastOnlineString($wasLastOnline);
 
-        if (@$role[1] == 'ROLE_ADMIN' and @$role[2] == 'ROLE_USER' OR @$role[1] == 'ROLE_USER' and @$role[2] == 'ROLE_USER') {
+        if (@$role[1] == 'ROLE_ADMIN' && @$role[2] == 'ROLE_USER' || @$role[1] == 'ROLE_USER' && @$role[2] == 'ROLE_USER') {
             $role = 'ROLE_ADMIN';
         } else {
             $role = 'ROLE_NOT_ADMIN';
@@ -109,7 +108,10 @@ class HomepageController extends AbstractController
     }
 
     #[Route('/search', name: 'search_article')]
-    public function searchArticle(Request $request, EntityManagerInterface $entityManager, Environment $twig, VideoGameArticlesRepository $videoGameArticlesRepository): Response
+    public function searchArticle(Request $request,
+    EntityManagerInterface $entityManager,
+    Environment $twig,
+    ): Response
     {
         $searchArticle = $request->query->get('search');
         $videoGameArticles = $entityManager->getRepository(VideoGameArticles::class)->findByName($searchArticle);
@@ -118,12 +120,26 @@ class HomepageController extends AbstractController
             foreach($videoGameArticles as $item) {
                 $findId = ($item->getId());
             }
+
+        return $this->redirectToRoute('article', ['id' => $findId]);
         }
-        dd($findId); // Осталось вернуть страницу статьи
 
         return new Response($twig->render('articles/search.html.twig', [
             'search' => $searchArticle,
             'articles' => $videoGameArticles,
+        ]));
+    }
+
+    #[Route('/profile/{nickname}', name: 'anotherProfile')]
+    public function anotherProfile(Environment $twig, UsersRepository $usersRepository, Request $request)
+    {
+        $nickname = $request->attributes->get('nickname');
+        $targetUser = $usersRepository->findOneBy(['nickname' => $nickname]);
+        $pathAvatar = '../uploads/' . '';
+
+        return new Response($twig->render('profile/anotherProfile.html.twig', [
+            'targetUser' => $targetUser,
+            'pathAvatar' => $pathAvatar
         ]));
     }
 }

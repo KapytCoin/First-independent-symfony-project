@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block body %}
+<table>
+    <tr><td class="tdTrDefoult"><h2>{{ targetUser.nickname }}</h1></td></tr>
+    <br>
+    <tr><td class="tdTrDefoult"><img width="100" height="100" src="{{ pathAvatar ~ targetUser.avatars }}"/></td></tr>
+    <tr><td class="tdTrDefoult"><h2>Последний раз в онлайне: {{ targetUser.lastOnlineString }}</h2></td></tr> 
+    {% if targetUser.roles['1'] is defined %}{% if (targetUser.roles['1'] == 'ROLE_BAN') or (targetUser.roles['2'] == 'ROLE_BAN') %}
+    <tr><td class="tdTrDefoult ban"><h2>Пользователь получил запрет на комментарии</h2></td></tr>{% endif %}{% endif %}
+
+    <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('anotherProfile', { nickname: targetUser.nickname }) }}">Добавить в друзья</h2></td></tr>
+    <tr><td><h2 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('homepage') }}">На главную страницу</h2></td></tr>
+</table>
+{% endblock %}
