@@ -11,7 +11,6 @@
             {{ userWhoSentRequest }} хочет добавить вас в друзья!
             <br>
         </h3>
-
         <form method="POST" action="{{ '/' }}">
             <input type="submit" name="accept" value="Принять">
             <input type="submit" name="reject" value="Отклонить">
@@ -28,7 +27,11 @@
             <button type="submit">Искать</button>
             </form>
             </td>
-			<td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_login')}}">Авторизация</h3></td>
+            {% if user == null %}
+			    <td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_login')}}">Авторизация</h3></td>
+            {% else  %}
+                <td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('app_logout') }}">Выйти из профиля</h3></td>
+            {% endif %}
             <td class="tdTrDefoult btn-new:hover btn-new"><h3><a href="{{ path('profile') }}">Мой профиль</h3></td>
 			<td class="tdTrDefoult"></td>
 			<td class="tdTrDefoult" style="text-align: center;"><h3>Пользователи сайта</h3></td>
