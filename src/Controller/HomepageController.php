@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\VideoGameArticles;
+use App\Repository\FriendshipRepository;
 use App\Repository\VideoGameReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -23,6 +24,7 @@ class HomepageController extends AbstractController
     EntityManagerInterface $entityManager, 
     Environment $twig, 
     UsersRepository $usersRepository,
+    FriendshipRepository $friendshipRepository,
     ): Response
     {
         $user = $this->getUser();
@@ -55,6 +57,63 @@ class HomepageController extends AbstractController
 
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
+
+        if ($user !== null) {
+            $currentlyUserId = $usersRepository->find($user)->getId();
+            $userWhoSentTheRequest = $friendshipRepository->findOneBy(['acceptingUserId' => $currentlyUserId]);
+
+            $post = $request->request->all();
+            $post = implode('', $post);
+            
+            if ($userWhoSentTheRequest) {
+                $userIdWhoSentTheRequest = $userWhoSentTheRequest->getSendingUserId();
+
+                $currentlyFriendship = $friendshipRepository->findOneBy([
+
+                    'acceptingUserId' => $currentlyUserId,
+                    'sendingUserId' => $userIdWhoSentTheRequest
+
+                ])->getStatus();
+
+                    if($post === 'Отклонить') {
+
+                        $findCurrentlyFriendship = $friendshipRepository->findOneBy([
+
+                            'sendingUserId' => $userIdWhoSentTheRequest,
+                            'acceptingUserId' => $currentlyUserId
+
+                        ]);
+                        $findCurrentlyFriendship->setStatus('Request rejected');
+
+                        $entityManager->persist($findCurrentlyFriendship);
+                        $entityManager->flush();
+
+                        return $this->redirectToRoute('homepage');
+                    } elseif ($post === 'Принять') {
+
+                        $findCurrentlyFriendship = $friendshipRepository->findOneBy([
+
+                            'sendingUserId' => $userIdWhoSentTheRequest,
+                            'acceptingUserId' => $currentlyUserId
+
+                        ]);
+                        $findCurrentlyFriendship->setStatus('Request approved');
+
+                        $entityManager->persist($findCurrentlyFriendship);
+                        $entityManager->flush();
+
+                        return $this->redirectToRoute('homepage');
+                    }
+
+            return new Response($twig->render('articles/index.html.twig', [
+                'videoGameArticles' => $videoGameArticles,
+                'users' => $usersRepository->findAll(),
+                'userWhoSentRequest' => $usersRepository->findOneBy(['id' => $userIdWhoSentTheRequest]),
+                'path' => $path,
+                'isAdmin' => $role,
+                'friendshipNotification' => $currentlyFriendship,
+            ]));
+        }}
 
         return new Response($twig->render('articles/index.html.twig', [
             'videoGameArticles' => $videoGameArticles,

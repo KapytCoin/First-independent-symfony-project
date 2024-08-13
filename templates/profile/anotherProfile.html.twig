@@ -11,19 +11,29 @@
     {% if targetUser.roles['1'] is defined %}{% if (targetUser.roles['1'] == 'ROLE_BAN') or (targetUser.roles['2'] == 'ROLE_BAN') %}
     <tr><td class="tdTrDefoult ban"><h2>Пользователь получил запрет на комментарии</h2></td></tr>{% endif %}{% endif %}
 
-    
-    {% if statusSent == 'Request sent' %}
-        <tr><td><h2 class="tdTrDefoult green">Запрос дружбы отправлен!</h2></td></tr>
-
-    {% elseif statusAccept == 'Request approved' %}
-        <tr><td><h2 class="tdTrDefoult green">Теперь вы друзья!</h2></td></tr>
-
-    {% elseif statusRejected == 'Request rejected' %}
-        <tr><td><h2 class="tdTrDefoult red">Дружба отклонена :(</h2></td></tr>
-    
+    {% if statusFriendship is defined %}
+        {% if statusFriendship == 'Request sent' %}
+            <tr><td><h2 class="tdTrDefoult green text">Запрос дружбы отправлен!</h2></td></tr>
+        {% elseif statusFriendship == 'Request approved' %}
+            <tr><td><h2 class="tdTrDefoult green text">Вы друзья!</h2></td></tr>
+            <br>
+            <tr><td class="tdTrDefoult">
+            <form action="{{ path('anotherProfile', { nickname: users.nickname }) }}" method="post">
+            <input name="addFriend" value="Удалить из друзей" type="hidden">
+            <button type="submit">Удалить из друзей</button>
+            </form></td></tr>
+        {% elseif statusFriendship == 'Request rejected' %}
+            <tr><td><h2 class="tdTrDefoult ban text">Один из вас отменил запрос в друзья :(</h2></td></tr>
+                <tr><td class="tdTrDefoult">
+                <form action="{{ path('anotherProfile', { nickname: users.nickname }) }}" method="post">
+                <input name="addFriend" value="Повторный запрос в друзья" type="hidden">
+                <button type="submit">Отправить запрос повторно?</button>
+                </form></td></tr>
+        {% endif %}
     {% else %}
-        <tr><td class="tdTrDefoult"><form action="{{ path('anotherProfile', { nickname: users.nickname }) }}" method="post">
-        <input name="addFriend" value="isPressed" type="hidden">
+        <tr><td class="tdTrDefoult">
+        <form action="{{ path('anotherProfile', { nickname: users.nickname }) }}" method="post">
+        <input name="addFriend" value="Запрос в друзья" type="hidden">
         <button type="submit">Добавить в друзья</button>
         </form></td></tr>
     {% endif %}

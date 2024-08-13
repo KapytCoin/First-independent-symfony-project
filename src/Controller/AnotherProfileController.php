@@ -33,43 +33,67 @@ class AnotherProfileController extends AbstractController
         $newFriend = new Friendship;
 
         $post = $request->request->all();
+        $post = implode('', $post);
 
         $findCurrentlyFriendship = $friendshipRepository->findOneBy(['sendingUserId' => $sendingUser, 'acceptingUserId' => $targetUserId]);
-        $serializeFindCurrentlyFriendship = serialize($findCurrentlyFriendship);
-        
-        $currentlyFriendship = strstr($serializeFindCurrentlyFriendship, 'Request sent');
-        $statusSent = strstr($currentlyFriendship, '";', true);
+        $friendshipNotification = $friendshipRepository->findOneBy(['sendingUserId' => $targetUser, 'acceptingUserId' => $sendingUser]);
 
-        $statusAccept = strstr($serializeFindCurrentlyFriendship, 'Request approved');
-        $statusAccept = strstr($statusAccept, '";', true);
-
-        $statusRejected = strstr($serializeFindCurrentlyFriendship, 'Request rejected');
-        $statusRejected = strstr($statusRejected, '";', true);
-
-        if ($post) {
-        $newFriend->setSendingUserId($sendingUser);
-        $newFriend->setAcceptingUserId($targetUserId);
-        $newFriend->setStatus('Request sent');
-
-        $entityManager->persist($newFriend);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('anotherProfile', ['nickname' => $nickname]); // Осталось сделать остальные два варианта с отображением в homepage
-                                                                                    // где таргет юзер отклоняет или принимает заявку в друзья
-        } elseif (1 == 3) {
+        if ($post === 'Запрос в друзья') {
             $newFriend->setSendingUserId($sendingUser);
             $newFriend->setAcceptingUserId($targetUserId);
-            $newFriend->setStatus($statusSent);
-    
+            $newFriend->setStatus('Request sent');
+
             $entityManager->persist($newFriend);
             $entityManager->flush();
-            } elseif (1 == 2) {
-                $newFriend->setSendingUserId($sendingUser);
-                $newFriend->setAcceptingUserId($targetUserId);
-                $newFriend->setStatus($statusSent);
-    
-                $entityManager->persist($newFriend);
-                $entityManager->flush();
+
+        return $this->redirectToRoute('anotherProfile', ['nickname' => $nickname]);
+        }
+
+        if ($post === 'Повторный запрос в друзья') {
+            $entityManager->remove($friendshipNotification);
+            $entityManager->flush();
+
+            $newFriend->setSendingUserId($sendingUser);
+            $newFriend->setAcceptingUserId($targetUserId);
+            $newFriend->setStatus('Request sent');
+
+            $entityManager->persist($newFriend);
+            $entityManager->flush();
+
+        return $this->redirectToRoute('anotherProfile', ['nickname' => $nickname]);
+        }
+
+        if ($post === 'Удалить из друзей') {
+            If ($friendshipNotification) {
+            $entityManager->remove($friendshipNotification);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('anotherProfile', ['nickname' => $nickname]);
+            }
+        }
+
+        if ($friendshipNotification) {
+            $currentlyStatusFriendship = $friendshipNotification->getStatus();
+
+            return new Response($twig->render('profile/anotherProfile.html.twig', [
+                'targetUser' => $targetUser,
+                'pathAvatar' => $pathAvatar,
+                'friendship' => $friendshipRepository->findAll(),
+                'users' => $usersRepository->findOneBy(['nickname' => $nickname]),
+                'statusFriendship' => $currentlyStatusFriendship,
+            ]));
+        }
+
+        if ($findCurrentlyFriendship) {
+            $currentlyStatusFriendship = $findCurrentlyFriendship->getStatus();
+
+            return new Response($twig->render('profile/anotherProfile.html.twig', [
+                'targetUser' => $targetUser,
+                'pathAvatar' => $pathAvatar,
+                'friendship' => $friendshipRepository->findAll(),
+                'users' => $usersRepository->findOneBy(['nickname' => $nickname]),
+                'statusFriendship' => $currentlyStatusFriendship,
+            ]));
         }
 
         return new Response($twig->render('profile/anotherProfile.html.twig', [
@@ -77,9 +101,6 @@ class AnotherProfileController extends AbstractController
             'pathAvatar' => $pathAvatar,
             'friendship' => $friendshipRepository->findAll(),
             'users' => $usersRepository->findOneBy(['nickname' => $nickname]),
-            'statusSent' => $statusSent,
-            'statusAccept' => $statusAccept,
-            'statusRejected' => $statusRejected
         ]));
     }
 }

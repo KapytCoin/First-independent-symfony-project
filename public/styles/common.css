@@ -76,5 +76,9 @@ hr {
 }
 
 .green {
-    color: chartreuse;
+    color: rgb(30, 255, 0);
+}
+
+.friendship {
+    color: rgb(21, 255, 0);
 }

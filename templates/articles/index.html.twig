@@ -3,7 +3,22 @@
 {% block title %}Bombaster - коротко о играх{% endblock %}
 
 {% block body %}
-{% if isAdmin == 'ROLE_ADMIN' %}<h3 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('admin')}}">Админка</h3>{% endif %}
+{% if isAdmin == 'ROLE_ADMIN' %}<h3 class="tdTrDefoult btn-new:hover btn-new"><a href="{{ path('admin')}}">Админка</a></h3>{% endif %}
+
+{% if friendshipNotification is defined %}
+    {% if friendshipNotification == 'Request sent' %}
+        <h3 style="color: rgb(21, 255, 0)" class="text">
+            {{ userWhoSentRequest }} хочет добавить вас в друзья!
+            <br>
+        </h3>
+
+        <form method="POST" action="{{ '/' }}">
+            <input type="submit" name="accept" value="Принять">
+            <input type="submit" name="reject" value="Отклонить">
+        </form>
+    {% endif %}
+{% endif %}
+
 <table class="center">
 	<tbody>
 		<tr class="">
