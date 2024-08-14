@@ -58,7 +58,7 @@ class HomepageController extends AbstractController
         $countReviews = $entityManager->getRepository(VideoGameArticles::class)->countReviewsAndAverageGrades();
         $path = 'uploads/' . '';
 
-        if ($user !== null) {
+        if ($user) {
             $currentlyUserId = $usersRepository->find($user)->getId();
             $userWhoSentTheRequest = $friendshipRepository->findOneBy(['acceptingUserId' => $currentlyUserId]);
 
@@ -112,14 +112,16 @@ class HomepageController extends AbstractController
                 'path' => $path,
                 'isAdmin' => $role,
                 'friendshipNotification' => $currentlyFriendship,
+                'user' => $user
             ]));
         }}
-
+        
         return new Response($twig->render('articles/index.html.twig', [
             'videoGameArticles' => $videoGameArticles,
             'users' => $usersRepository->findAll(),
             'path' => $path,
             'isAdmin' => $role,
+            'user' => $user
         ]));
     }
 
