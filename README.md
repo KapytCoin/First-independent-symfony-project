@@ -1,1 +1,1 @@
-Мой первый самостоятельный проект на Symfony
+Independent project on Symfony
